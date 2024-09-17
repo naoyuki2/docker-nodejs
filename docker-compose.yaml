@@ -1,14 +1,33 @@
-version: "3.7"
+version: '3.7'
 services:
-    app:
-      image: node:16.14.0
-      working_dir: /usr/src/app
-      tty: true
-      ports:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
       - '3000:3000'
-      volumes:
-        - ./:/usr/src/app
-      command: >
-        bash -c "npm install &&
-        npm install nodemon -g &&
-        nodemon src/server.js"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+      POSTGRES_HOST: db
+    tty: true
+    depends_on:
+      - db
+    command: >
+      /bin/sh -c "npm install && npm run typeorm migration:run -d src/app-data-source.ts && npm run start"
+
+  db:
+    image: postgres:16-alpine3.20
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./docker/db:/docker-entrypoint-initdb.d
+    ports:
+      - '5432:5432'
