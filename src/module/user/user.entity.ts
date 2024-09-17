@@ -24,4 +24,16 @@ export class User {
   @IsString()
   @IsNotEmpty()
   password!: string
+
+  @Column('varchar')
+  @IsString()
+  telephone!: string
+
+  @Column('varchar')
+  @IsString()
+  address!: string
+
+  @Column('varchar')
+  @IsString()
+  test!: string
 }
