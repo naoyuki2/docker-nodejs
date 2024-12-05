@@ -4,7 +4,7 @@ import { RouteController } from './controller/route.controller'
 import path from 'path'
 import { AppDataSource } from './app-data-source'
 
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
 AppDataSource.initialize()
   .then(() => {
