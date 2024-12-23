@@ -29,3 +29,5 @@ app.use(
 )
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))
+// 主な経験職種
+// occupationの削除
